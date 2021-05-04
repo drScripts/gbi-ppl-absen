@@ -25,6 +25,7 @@ class AbsensiRequest extends FormRequest
     {
         return [
             'children_id'=>'required|exists:childrens,id', 
+            'quiz' =>'required|string',
             'foto' => 'image',
             'video' => 'mimes:mp4,mov,ogg,qt,x-ms-wmv|max:20000',
         ];

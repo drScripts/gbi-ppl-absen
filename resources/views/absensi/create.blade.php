@@ -43,7 +43,28 @@
                                 </option>
                                 @endforeach
                             </select>
-
+                        </div>
+                        <div class="w-full mt-8 px-3">
+                            <label for="grid-quiz"
+                                class="block uppercase tracking-wide text-lg text-gray-700 text-xs font-bold mb-2">
+                                Children Quiz
+                            </label>
+                            <select name="quiz" id="grid-quiz"
+                                class="appearance-none block w-full bg-gray-200 text-gray-700 rounded-xl focus:outline-none focus:bg-white"
+                                required>
+                                @if (old('children_id'))
+                                <optgroup label="Your Selected Before">
+                                    <option class="rounded-xl" value="{{ old('quiz') }}">{{ old('quiz') }}
+                                    </option>
+                                </optgroup>
+                                @else
+                                <option class="rounded-xl" value="">Select Children Quiz</option>
+                                @endif
+                                <optgroup label="Options">
+                                    <option class="rounded-xl" value="yes">Yes</option>
+                                    <option class="rounded-xl" value="no">No</option>
+                                </optgroup>
+                            </select>
                         </div>
                         <div class="grid grid-flow-col mt-20 auto-cols-max mx-auto">
                             <label

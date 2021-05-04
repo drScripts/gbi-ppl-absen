@@ -10,7 +10,7 @@ class Absensi extends Model
 {
     use HasFactory,SoftDeletes;
     protected $fillable = [
-        'children_id', 'pembimbing_id', 'video','image','sunday_date', 
+        'children_id', 'pembimbing_id', 'video','image','quiz','month','sunday_date', 
     ];
 
     public function children(){

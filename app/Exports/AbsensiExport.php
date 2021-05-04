@@ -36,7 +36,8 @@ class AbsensiExport implements FromArray, WithStyles, WithHeadings, WithColumnWi
             'Kelas',          
             'Nama Pembimbing',
             'Absen Foto' ,    
-            'Absen Video',    
+            'Absen Video',   
+            'Quiz', 
             'Tanggal Minggu', 
         ];
     }
@@ -59,7 +60,8 @@ class AbsensiExport implements FromArray, WithStyles, WithHeadings, WithColumnWi
             'D' => 20,
             'E' => 20,
             'F' => 20,
-            'G' => 30,           
+            'G' => 20,
+            'H' => 30,           
         ];
     }
 }
