@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
-use App\Models\Children; 
-use App\Models\Pembimbing; 
+use App\Models\Children;
+use App\Models\Pembimbing;
 use App\Exports\AbsensiExport;
 use App\Models\GoogleApiToken;
 use App\Http\Controllers\Controller;
@@ -37,8 +37,8 @@ class AbsensiController extends Controller
 			'November',
 			'Desember'
 		);
-        
-        $sunday = strtotime('this sunday'); 
+
+        $sunday = strtotime('this sunday');
         $date = date('d',$sunday);
         $date = $date*=1;
 
@@ -56,7 +56,7 @@ class AbsensiController extends Controller
         $now_month = $bulan[$now_month];
         $now_year = date('Y',$now);
         $now_date = "$date_now $now_month $now_year";
-        
+
         // thuesday date
         $tuesday = strtotime('next tuesday');
         $tuesday_date = date('d', $tuesday);
@@ -66,7 +66,7 @@ class AbsensiController extends Controller
         $tuesday_month = $bulan[$tuesday_month];
         $this_tuesday = date('Y',$tuesday);
         $this_tuesday = "$tuesday_date $this_tuesday $this_tuesday";
-        
+
         // last date
         $last_sunday = strtotime('last sunday');
         $last_date = date('d', $last_sunday);
@@ -76,26 +76,26 @@ class AbsensiController extends Controller
         $last_month = $bulan[$last_month];
         $last_sundays = date('Y',$last_sunday);
         $las_sundays = "$last_date $last_month $last_sundays";
-        
+
         // dd($las_sundays);
         $file_name = '';
         if($tuesday >= $now){
-           
-            if($date == $date_now){ 
+
+            if($date == $date_now){
                 $file_name = $now_date;
             }elseif($date_now <= $date && $date_now<=$tuesday_date){
                 $file_name = $las_sundays;
             }else{
-                $file_name = $sunday; 
+                $file_name = $sunday;
             }
-        }  
+        }
         $bulans = explode(" ",$file_name)[1];
         $data = Absensi::with(['children','pembimbing'])->where('month',$bulans)->latest()->paginate(10);
-       
+
         return view('absensi.index',[
             'data' => $data,
         ]);
-    
+
     }
 
     public function export(){
@@ -112,8 +112,8 @@ class AbsensiController extends Controller
 			'November',
 			'Desember'
 		);
-        
-        $sunday = strtotime('this sunday'); 
+
+        $sunday = strtotime('this sunday');
         $date = date('d',$sunday);
         $date = $date*=1;
 
@@ -131,7 +131,7 @@ class AbsensiController extends Controller
         $now_month = $bulan[$now_month];
         $now_year = date('Y',$now);
         $now_date = "$date_now $now_month $now_year";
-        
+
         // thuesday date
         $tuesday = strtotime('next tuesday');
         $tuesday_date = date('d', $tuesday);
@@ -141,7 +141,7 @@ class AbsensiController extends Controller
         $tuesday_month = $bulan[$tuesday_month];
         $this_tuesday = date('Y',$tuesday);
         $this_tuesday = "$tuesday_date $this_tuesday $this_tuesday";
-        
+
         // last date
         $last_sunday = strtotime('last sunday');
         $last_date = date('d', $last_sunday);
@@ -151,21 +151,21 @@ class AbsensiController extends Controller
         $last_month = $bulan[$last_month];
         $last_sundays = date('Y',$last_sunday);
         $las_sundays = "$last_date $last_month $last_sundays";
-        
+
         // dd($las_sundays);
         $file_name = '';
         if($tuesday >= $now){
-           
-            if($date == $date_now){ 
+
+            if($date == $date_now){
                 $file_name = $now_date;
             }elseif($date_now <= $date && $date_now<=$tuesday_date){
                 $file_name = $las_sundays;
             }else{
-                $file_name = $sunday; 
+                $file_name = $sunday;
             }
-        }  
+        }
         $bulans = explode(" ",$file_name)[1];
-        $data = Absensi::with(['children','pembimbing'])->where('month',$bulans)->get(); 
+        $data = Absensi::with(['children','pembimbing'])->where('month',$bulans)->get();
         $tanggal_awal = $data[0]->sunday_date;
         $data_semua = [];
         $data_beda = [];
@@ -175,7 +175,7 @@ class AbsensiController extends Controller
                 $data_beda[] = $absen->sunday_date;
             }
             if($absen->sunday_date == $tanggal_awal){
-               
+
                 $data_baru = [
                     'Nama Anak'       => $absen->children->name,
                     'Code Anak'       => $absen->children->code,
@@ -188,9 +188,9 @@ class AbsensiController extends Controller
                 ];
                 $data_semua[] = $data_baru;
             }
-        }  
-        $beda_akhir = array_unique($data_beda); 
-        
+        }
+        $beda_akhir = array_unique($data_beda);
+
         foreach($beda_akhir as $tanggal){
             $data_baru = [
                 'Nama Anak'       => ' ',
@@ -203,7 +203,7 @@ class AbsensiController extends Controller
                 'Tanggal Minggu'  => ' ',
             ];
             $data_semua[] = $data_baru;
-           $datas = Absensi::with(['children','pembimbing'])->where('sunday_date',$tanggal)->get(); 
+           $datas = Absensi::with(['children','pembimbing'])->where('sunday_date',$tanggal)->get();
             foreach($datas as $data){
                 $data_baru = [
                     'Nama Anak'       => $data->children->name,
@@ -216,8 +216,8 @@ class AbsensiController extends Controller
                     'Tanggal Minggu'  => $data->sunday_date,
                 ];
                 $data_semua[] = $data_baru;
-            } 
-        }    
+            }
+        }
 
         $export = new AbsensiExport($data_semua);
         return Excel::download($export, 'Absensi '. $bulans .'.xlsx');
@@ -230,10 +230,10 @@ class AbsensiController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    { 
-       $childrens = Children::all(); 
+    {
+       $childrens = Children::all();
        return view('absensi.create',[
-           'childrens' => $childrens, 
+           'childrens' => $childrens,
        ]);
     }
 
@@ -249,11 +249,11 @@ class AbsensiController extends Controller
         $id_children = $get_children['children_id'];
         $children_quiz = $get_children['quiz'];
         $response = Children::find($id_children);
-        
-        $id_pembimbing = $response->id_pembimbing; 
+
+        $id_pembimbing = $response->id_pembimbing;
         $token = GoogleApiToken::all()->first();
         $refresh_token =  strval($token->refresh_token);
-        $token_access = strval($token->access_token); 
+        $token_access = strval($token->access_token);
         $services = new GoogleApiServiceController($refresh_token,$token_access);
         // // folder Parents date name
 
@@ -270,8 +270,8 @@ class AbsensiController extends Controller
 			'November',
 			'Desember'
 		);
-        
-        $sunday = strtotime('this sunday'); 
+
+        $sunday = strtotime('this sunday');
         $date = date('d',$sunday);
         $date = $date*=1;
 
@@ -289,7 +289,7 @@ class AbsensiController extends Controller
         $now_month = $bulan[$now_month];
         $now_year = date('Y',$now);
         $now_date = "$date_now $now_month $now_year";
-        
+
         // thuesday date
         $tuesday = strtotime('next tuesday');
         $tuesday_date = date('d', $tuesday);
@@ -299,7 +299,7 @@ class AbsensiController extends Controller
         $tuesday_month = $bulan[$tuesday_month];
         $this_tuesday = date('Y',$tuesday);
         $this_tuesday = "$tuesday_date $this_tuesday $this_tuesday";
-        
+
         // last date
         $last_sunday = strtotime('last sunday');
         $last_date = date('d', $last_sunday);
@@ -309,26 +309,26 @@ class AbsensiController extends Controller
         $last_month = $bulan[$last_month];
         $last_sundays = date('Y',$last_sunday);
         $las_sundays = "$last_date $last_month $last_sundays";
-        
+
         // dd($las_sundays);
         $file_name = '';
         if($tuesday >= $now){
-           
-            if($date == $date_now){ 
+
+            if($date == $date_now){
                 $file_name = $now_date;
             }elseif($date_now <= $date && $date_now<=$tuesday_date){
                 $file_name = $las_sundays;
             }else{
-                $file_name = $sunday; 
+                $file_name = $sunday;
             }
-        }  
+        }
         $bulans = explode(" ",$file_name)[1];
-        $children_id = $id_children; 
+        $children_id = $id_children;
         $pembimbing_id = $id_pembimbing;
         $foto = $request->file('foto') ;
         $video = $request->file('video');
         $is_video = '';
-        $is_foto = '';   
+        $is_foto = '';
 
         if(!$foto){
             $is_foto = 'no';
@@ -342,48 +342,48 @@ class AbsensiController extends Controller
             $is_video = 'yes';
         }
 
-        
-         
-        $children = Children::find($children_id); 
+
+
+        $children = Children::find($children_id);
         $children_name = $children->name;
- 
-       
+
+
         $video_info = '';
         if($video){
             $video_info = pathinfo($video->getClientOriginalName());
-        } 
+        }
 
         $foto_info = '';
         if($foto){
             $foto_info = pathinfo($foto->getClientOriginalName());
         }
-         
+
         // // variables
         $sunday_date_id = '';
         $region_id = '';
-        $role_besar_id = ''; 
+        $role_besar_id = '';
         $foto_besar_id = '';
-        $video_besar_id = ''; 
+        $video_besar_id = '';
         // create parents date folder
-        $sunday_date_id = $services->search_parents_date_folder($file_name,$this->parents_id); 
- 
+        $sunday_date_id = $services->search_parents_date_folder($file_name,$this->parents_id);
+
         // create parents Region
         $region_id = $services->search_parents_date_folder('Kopo',$sunday_date_id);
         // create parents role Besar
-        $role_besar_id = $services->search_parents_date_folder('Besar',$region_id); 
+        $role_besar_id = $services->search_parents_date_folder('Besar',$region_id);
         // create foto + video role besar
         $foto_besar_id = $services->search_parents_date_folder('Foto',$role_besar_id);
-        $video_besar_id = $services->search_parents_date_folder('Video',$role_besar_id); 
+        $video_besar_id = $services->search_parents_date_folder('Video',$role_besar_id);
 
         $response = '';
-        
+
             if($video){
                   $services->push_file($children_name,$video_besar_id,$video_info,$video);
             }
             if($foto){
                 $services->push_file($children_name,$foto_besar_id,$foto_info,$foto);
             }
-        
+
         Absensi::create([
             'children_id' => $children_id,
             'pembimbing_id' => $pembimbing_id,
@@ -393,8 +393,8 @@ class AbsensiController extends Controller
             'month' => $bulans,
             'sunday_date' => $file_name,
         ]);
-        
-        return redirect()->route('absensi.create'); 
+
+        return redirect()->route('absensi.create');
     }
 
     /**
@@ -413,9 +413,19 @@ class AbsensiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Absensi $absensi)
     {
-        //
+
+
+       $anak = Children::where('id',$absensi->children_id)->get()->first();
+
+       $children = Children::all();
+
+        return view('absensi.edit',[
+            'child' => $anak,
+            'childrens' => $children,
+            'absensi' => $absensi,
+        ]);
     }
 
     /**
@@ -427,7 +437,14 @@ class AbsensiController extends Controller
      */
     public function update(AbsensiRequest $request, $id)
     {
-        //
+
+        $data = $request->all();
+        $children_id = $id;
+        $quiz_data = $data['quiz'];
+        Absensi::where('children_id',$children_id)->update([
+            'quiz' => $quiz_data,
+        ]);
+        return redirect()->route('absensi.index');
     }
 
     /**

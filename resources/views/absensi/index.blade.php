@@ -49,7 +49,8 @@
                             <td class="border border-white px-6 py-4 text-center">{{ $child->quiz }}</td>
                             <td class="border border-white px-6 py-4 text-center">{{ $child->sunday_date }}</td>
                             <td class="border border-white px-6 py-4 text-center">
-
+                                <a href="{{ route('absensi.edit',$child->id) }}"
+                                    class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-2 rounded">Edit</a>
                                 <form action="{{ route('absensi.destroy',$child->id) }}" method="POST"
                                     class="inline-block">
                                     {!! method_field('delete') . csrf_field() !!}

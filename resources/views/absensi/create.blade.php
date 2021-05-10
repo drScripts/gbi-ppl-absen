@@ -111,12 +111,12 @@
     <script type="text/javascript">
         function readURL(input) {
             if (input.files && input.files[0]) {
-                
+
                 var reader = new FileReader();
-                
-                reader.onload = function (e) { 
+
+                reader.onload = function (e) {
                     $('#foto-label').css('background-image','url(' + e.target.result + ')');
-                    $('#foto-label').css('background-size','contain'); 
+                    $('#foto-label').css('background-size','contain');
                 }
                 reader.readAsDataURL(input.files[0]);
             }
@@ -129,7 +129,7 @@
             var name = this.files[0].name;
             $('#video-name').text(name);
             $('#video-svg').remove();
-        });  
+        });
     </script>
 
 </x-app-layout>
